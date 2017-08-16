@@ -1,0 +1,11 @@
+[package]
+name = "gather-cidr-map"
+version = "0.1.0"
+authors = ["Stefan Bühler <stbuehler@web.de>"]
+description = "map IP prefixes to string values, collect for each IP the last matching string and group the results"
+
+[dependencies]
+bitstring = "0.1"
+bitstring-trees = "0.1"
+cidr = "0.0.3"
+clap = { version = "2.26.0" }
