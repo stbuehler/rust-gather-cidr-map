@@ -7,5 +7,5 @@ description = "map IP prefixes to string values, collect for each IP the last ma
 [dependencies]
 bitstring = "0.1"
 bitstring-trees = "0.1"
-cidr = "0.0.3"
+cidr = { version = "0.2.0", features = ["bitstring"] }
 clap = { version = "2.26.0" }
