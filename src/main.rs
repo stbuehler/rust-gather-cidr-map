@@ -71,9 +71,9 @@ fn main() {
 				}
 				continue;
 			}
-			let key = Into::<Option<IpCidr>>::into(key.clone()).unwrap();
+			let key = Into::<Option<IpCidr>>::into(key).unwrap();
 			prev = match prev {
-				None => Some((key.clone(), key.last_address(), value.clone())),
+				None => Some((key, key.last_address(), value)),
 				Some((first_range, last, prev_value)) => {
 					if prev_value == value && first_range.family() == key.family() {
 						Some((first_range, key.last_address(), prev_value))
@@ -81,15 +81,13 @@ fn main() {
 						if let Some(prev_value) = prev_value {
 							println!("{}-{}\t{}", first_range.first_address(), last, prev_value);
 						}
-						Some((key.clone(), key.last_address(), value.clone()))
+						Some((key, key.last_address(), value))
 					}
 				},
 			}
 		}
-		if let Some((first_range, last, prev_value)) = prev {
-			if let Some(prev_value) = prev_value {
-				println!("{}-{}\t{}", first_range.first_address(), last, prev_value);
-			}
+		if let Some((first_range, last, Some(prev_value))) = prev {
+			println!("{}-{}\t{}", first_range.first_address(), last, prev_value);
 		}
 	} else {
 		for (key, value) in map.iter_full() {
