@@ -3,9 +3,19 @@ name = "gather-cidr-map"
 version = "0.1.0"
 authors = ["Stefan Bühler <stbuehler@web.de>"]
 description = "map IP prefixes to string values, collect for each IP the last matching string and group the results"
+homepage = "https://github.com/stbuehler/rust-gather-cidr-map"
+repository = "https://github.com/stbuehler/rust-gather-cidr-map"
+categories = ["command-line-utilities","data-structures","network-programming"]
+keywords = ["cidr", "network"]
+readme = "README.md"
+license = "MIT"
 
 [dependencies]
 bitstring = "0.1"
 bitstring-trees = "0.1"
 cidr = { version = "0.2.0", features = ["bitstring"] }
 clap = { version = "2.26.0" }
+
+[package.metadata.docs.rs]
+all-features = true
+targets = []
