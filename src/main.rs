@@ -1,19 +1,24 @@
-extern crate cidr;
 extern crate bitstring_trees;
+extern crate cidr;
 #[macro_use]
 extern crate clap;
 
 use bitstring_trees::map::RadixMap;
 use cidr::*;
-use std::io::{self,BufRead};
-use std::str::FromStr;
+use std::{
+	io::{
+		self,
+		BufRead,
+	},
+	str::FromStr,
+};
 
 fn split_line(line: &str) -> (&str, &str) {
 	let line = line.trim();
 	match line.find(char::is_whitespace) {
 		Some(pos) => {
 			let key = &line[..pos];
-			let rem = &line[pos+1..];
+			let rem = &line[pos + 1..];
 			for (pos2, c) in rem.char_indices() {
 				if !c.is_whitespace() {
 					return (key, &rem[pos2..]);
@@ -34,7 +39,8 @@ fn main() {
 		(@arg prefix: -p "Group into smallest number of prefixes (default)")
 		(@arg range: -r conflicts_with("prefix") "Group into smallest number of a-b ranges")
 		(@arg unset: -u conflicts_with("range") "also show IPs with no value (only for prefix output)")
-	).get_matches();
+	)
+	.get_matches();
 
 	let output_range = matches.is_present("range");
 	let show_unset = matches.is_present("unset");
@@ -45,7 +51,9 @@ fn main() {
 	for line in input.lines() {
 		let line = line.unwrap();
 		let line = line.as_str().trim();
-		if line.is_empty() || line.starts_with('#') { continue; }
+		if line.is_empty() || line.starts_with('#') {
+			continue;
+		}
 		let (cidr, value) = split_line(line);
 		let cidr = match AnyIpCidr::from_str(cidr) {
 			Ok(cidr) => cidr,
@@ -65,9 +73,7 @@ fn main() {
 			}
 			let key = Into::<Option<IpCidr>>::into(key.clone()).unwrap();
 			prev = match prev {
-				None => {
-					Some((key.clone(), key.last_address(), value.clone()))
-				},
+				None => Some((key.clone(), key.last_address(), value.clone())),
 				Some((first_range, last, prev_value)) => {
 					if prev_value == value && first_range.family() == key.family() {
 						Some((first_range, key.last_address(), prev_value))
@@ -77,7 +83,7 @@ fn main() {
 						}
 						Some((key.clone(), key.last_address(), value.clone()))
 					}
-				}
+				},
 			}
 		}
 		if let Some((first_range, last, prev_value)) = prev {
@@ -93,7 +99,7 @@ fn main() {
 				},
 				None if show_unset => {
 					println!("{}", key);
-				}
+				},
 				_ => (),
 			}
 		}
