@@ -4,7 +4,7 @@ extern crate cidr;
 extern crate clap;
 
 use bitstring_trees::map::RadixMap;
-use cidr::*;
+use cidr::{AnyIpCidr, IpCidr};
 use std::{
 	io::{
 		self,
@@ -65,13 +65,15 @@ fn main() {
 	if output_range {
 		let mut prev = None;
 		for (key, value) in map.iter_full() {
-			if key.is_any() {
-				if let Some(value) = value {
-					println!("{} => {}", key, value);
-				}
-				continue;
-			}
-			let key = Into::<Option<IpCidr>>::into(key).unwrap();
+			let key: IpCidr = match key.into() {
+				None => { // any
+					if let Some(value) = value {
+						println!("{} => {}", key, value);
+					}
+					continue;
+				},
+				Some(key) => key,
+			};
 			prev = match prev {
 				None => Some((key, key.last_address(), value)),
 				Some((first_range, last, prev_value)) => {
