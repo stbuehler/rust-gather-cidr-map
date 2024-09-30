@@ -1,8 +1,9 @@
-#[macro_use]
-extern crate clap;
-
 use bitstring_trees::map::RadixMap;
-use cidr::{AnyIpCidr, IpCidr};
+use cidr::{
+	AnyIpCidr,
+	IpCidr,
+};
+use clap::Parser;
 use std::{
 	io::{
 		self,
@@ -28,20 +29,26 @@ fn split_line(line: &str) -> (&str, &str) {
 	}
 }
 
-fn main() {
-	let matches = clap_app!(
-		@app (clap::App::new(crate_name!()))
-		(version: crate_version!())
-		(author: crate_authors!())
-		(about: crate_description!())
-		(@arg prefix: -p "Group into smallest number of prefixes (default)")
-		(@arg range: -r conflicts_with("prefix") "Group into smallest number of a-b ranges")
-		(@arg unset: -u conflicts_with("range") "also show IPs with no value (only for prefix output)")
-	)
-	.get_matches();
+#[derive(clap::Parser)]
+#[command(version, about, long_about = None)]
+struct Args {
+	/// Group into smallest number of prefixes (default)
+	#[arg(long, short)]
+	prefix: bool, // value unused, just for "conflict with"
 
-	let output_range = matches.is_present("range");
-	let show_unset = matches.is_present("unset");
+	/// Group into smallest number of a-b ranges
+	#[arg(conflicts_with("prefix"))]
+	#[arg(long, short)]
+	range: bool,
+
+	/// also show IPs with no value (only for prefix output)
+	#[arg(conflicts_with("range"))]
+	#[arg(long, short)]
+	unset: bool,
+}
+
+fn main() {
+	let args = Args::parse();
 
 	let mut map = RadixMap::<AnyIpCidr, String>::new();
 	let stdin = io::stdin();
@@ -60,11 +67,12 @@ fn main() {
 		map.insert(cidr, value.to_string());
 	}
 
-	if output_range {
+	if args.range {
 		let mut prev = None;
 		for (key, value) in map.iter_full() {
 			let key: IpCidr = match key.into() {
-				None => { // any
+				None => {
+					// any
 					if let Some(value) = value {
 						println!("{} => {}", key, value);
 					}
@@ -95,7 +103,7 @@ fn main() {
 				Some(value) => {
 					println!("{}\t{}", key, value);
 				},
-				None if show_unset => {
+				None if args.unset => {
 					println!("{}", key);
 				},
 				_ => (),
