@@ -1,5 +1,3 @@
-extern crate bitstring_trees;
-extern crate cidr;
 #[macro_use]
 extern crate clap;
 

@@ -1,6 +1,7 @@
 [package]
 name = "gather-cidr-map"
 version = "0.1.0"
+edition = "2021"
 authors = ["Stefan Bühler <stbuehler@web.de>"]
 description = "map IP prefixes to string values, collect for each IP the last matching string and group the results"
 homepage = "https://github.com/stbuehler/rust-gather-cidr-map"
