@@ -53,24 +53,24 @@ dependencies = [
 
 [[package]]
 name = "bitstring"
-version = "0.1.2"
+version = "0.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "22a39c0db600cfe77ef1b6d9ea71173bdccf190722877969d526d380519b6ecc"
+checksum = "f2694bf18f5b9f05a144c72b37d20518b0929cc0c3a65b4d175505d0b5a1b10b"
 
 [[package]]
 name = "bitstring-trees"
-version = "0.1.1"
+version = "0.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5f819939b1b1a7dff5a92075e27e82e3d8df09492b56143bebe4e41fdf415419"
+checksum = "18911b541447ffaae248431e48d57402935a04fdc3a8acb63cf4dbd0ce54e73a"
 dependencies = [
  "bitstring",
 ]
 
 [[package]]
 name = "cidr"
-version = "0.2.1"
+version = "0.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "300bccc729b1ada84523246038aad61fead689ac362bb9d44beea6f6a188c34b"
+checksum = "bfc95a0c21d5409adc146dbbb152b5c65aaea32bc2d2f57cf12f850bffdd7ab8"
 dependencies = [
  "bitstring",
 ]
@@ -125,7 +125,6 @@ checksum = "d3fd119d74b830634cea2a0f58bbd0d54540518a14397557951e79340abc28c0"
 name = "gather-cidr-map"
 version = "0.1.0"
 dependencies = [
- "bitstring",
  "bitstring-trees",
  "cidr",
  "clap",

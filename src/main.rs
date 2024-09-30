@@ -1,4 +1,4 @@
-use bitstring_trees::map::RadixMap;
+use bitstring_trees::map::Map;
 use cidr::{
 	AnyIpCidr,
 	IpCidr,
@@ -50,7 +50,7 @@ struct Args {
 fn main() {
 	let args = Args::parse();
 
-	let mut map = RadixMap::<AnyIpCidr, String>::new();
+	let mut map = Map::<AnyIpCidr, String>::new();
 	let stdin = io::stdin();
 	let input = stdin.lock();
 	for line in input.lines() {

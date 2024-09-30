@@ -12,9 +12,8 @@ readme = "README.md"
 license = "MIT"
 
 [dependencies]
-bitstring = "0.1"
-bitstring-trees = "0.1"
-cidr = { version = "0.2.0", features = ["bitstring"] }
+bitstring-trees = "0.2"
+cidr = { version = "0.3.0", features = ["bitstring"] }
 clap = { version = "4.5.18", features = ["derive"] }
 
 [package.metadata.docs.rs]
